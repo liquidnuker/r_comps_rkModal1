@@ -1,0 +1,58 @@
+// main modal styles
+@import "../vendor/bootstrap4/bs4modal1";
+
+// rkmodal2
+// ==================================================/
+.rkmodal2 {
+  .bs4modal-body {
+    @extend %pos--relative;
+    
+    .rkmodal2_prevholder,
+    .rkmodal2_nextholder {
+      @extend %display--none;
+    }
+
+    &:hover {
+      .rkmodal2_prevholder,
+      .rkmodal2_nextholder {
+        @extend %display--block;
+      }
+    }
+
+    .rkmodal2_prevholder,
+    .rkmodal2_nextholder {
+      @extend %pos--absolute;
+      height: 100%;
+      top: 0;
+      z-index: 2;
+    }
+
+    // relative holder for centering svg
+    .rkmodal2_svgholder {
+      @extend %pos--relative;
+      padding: 10px;
+      background-color: #000;
+      height: 100%;
+      cursor: pointer;
+
+      svg {
+        @extend %display--inline-block;
+        @include center-both;
+        width: 24px;
+        height: 24px;
+        // background-color: #ccc;
+        fill: #fff;
+      }
+    }
+  }
+
+  .rkmodal2_prevholder {
+    left: 0;
+  }
+
+  .rkmodal2_nextholder {
+    right: 0;
+  }
+}
+
+//

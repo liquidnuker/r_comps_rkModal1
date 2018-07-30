@@ -1,0 +1,199 @@
+@import "functions";
+@import "variables";
+@import "mixins/breakpoints";
+@import "mixins/border-radius";
+@import "mixins/box-shadow";
+
+// modal animations
+@import "../animatecss/base";
+@import "../animatecss/bounceIn";
+@import "../animatecss/bounceOut";
+
+// Custom toggles at bottom
+
+// .bs4modal-open      - body class for killing the scroll
+// .bs4modal           - container to scroll within
+// .bs4modal-dialog    - positioning shell for the actual modal
+// .bs4modal-content   - actual modal w/ bg and corners and stuff
+// *mod             - modifications
+
+// Kill the scroll on the body
+.bs4modal-open {
+  overflow: hidden;
+}
+
+// Container that the modal scrolls within
+.bs4modal {
+  background-color: rgba(0,0,0,0.4); // *mod
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal;
+  display: none;
+  overflow: hidden;
+  // Prevent Chrome on Windows from adding a focus outline. For details, see
+  // https://github.com/twbs/bootstrap/pull/10951.
+  outline: 0;
+  // We deliberately don't use `-webkit-overflow-scrolling: touch;` due to a
+  // gnarly iOS Safari bug: https://bugs.webkit.org/show_bug.cgi?id=158342
+  // See also https://github.com/twbs/bootstrap/issues/17695
+
+  // *mod 
+  overflow-y: scroll;
+
+  .bs4modal-open & {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+}
+
+// Shell div to position the modal with bottom padding
+.bs4modal-dialog {
+  position: relative;
+  width: auto;
+  margin: $modal-dialog-margin;
+  // allow clicks to pass through for custom click handling to close modal
+  pointer-events: none;
+
+  // When fading in the modal, animate it to slide down
+  .bs4modal.fade & {
+    // @include transition($modal-transition);
+    transform: translate(0, -25%);
+  }
+  .bs4modal.show & {
+    transform: translate(0, 0);
+  }
+}
+
+.bs4modal-dialog-centered {
+  display: flex;
+  align-items: center;
+  min-height: calc(100% - (#{$modal-dialog-margin} * 2));
+}
+
+// Actual modal
+.bs4modal-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%; // Ensure `.bs4modal-content` extends the full width of the parent `.bs4modal-dialog`
+  // counteract the pointer-events: none; in the .bs4modal-dialog
+  pointer-events: auto;
+  background-color: #fff; // *mod
+  background-clip: padding-box;
+  border: $modal-content-border-width solid $modal-content-border-color;
+  @include border-radius($modal-content-border-radius);
+  // Remove focus outline from opened modal
+  outline: 0;
+
+  // *mod
+  -webkit-box-shadow: 2px 2px 5px 1px #666;
+  -moz-box-shadow: 2px 2px 5px 1px #666;
+  box-shadow: 2px 2px 5px 1px #666;
+}
+
+// Modal background
+.bs4modal-backdrop {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-modal-backdrop;
+  background-color: $modal-backdrop-bg;
+
+  // Fade for backdrop
+  &.fade { opacity: 0; }
+  &.show { opacity: $modal-backdrop-opacity; }
+}
+
+// Modal header
+// Top section of the modal w/ title and dismiss
+.bs4modal-header {
+  display: flex;
+  align-items: flex-start; // so the close btn always stays on the upper right corner
+  justify-content: space-between; // Put modal header elements (title and dismiss) on opposite ends
+  padding: 4px; // *mod
+  border-bottom: 1px solid #000; // *mod
+  @include border-top-radius($modal-content-border-radius);
+
+  .close {
+    padding: $modal-header-padding;
+    // auto on the left force icon to the right even when there is no .bs4modal-title
+    margin: (-$modal-header-padding) (-$modal-header-padding) (-$modal-header-padding) auto;
+  }
+}
+
+// Title text within header
+.bs4modal-title {
+  @extend %padd--4;
+  margin-bottom: 0;
+  // line-height: $modal-title-line-height;
+}
+
+// Modal body
+// Where all modal content resides (sibling of .bs4modal-header and .bs4modal-footer)
+.bs4modal-body {
+  position: relative;
+  // Enable `flex-grow: 1` so that the body take up as much space as possible
+  // when should there be a fixed height on `.bs4modal-dialog`.
+  flex: 1 1 auto;
+  padding: 8px; // *mod
+}
+
+// Footer (for actions)
+.bs4modal-footer {
+  display: flex;
+  align-items: center; // vertically center
+  justify-content: flex-end; // Right align buttons with flex property because text-align doesn't work on flex items
+  padding: 8px; // *mod
+  border-top: 1px solid #000; // *mod
+
+  // Easily place margin between footer elements
+  > :not(:first-child) { margin-left: .25rem; }
+  > :not(:last-child) { margin-right: .25rem; }
+}
+
+// Measure scrollbar width for padding body during modal show/hide
+.bs4modal-scrollbar-measure {
+  position: absolute;
+  top: -9999px;
+  width: 50px;
+  height: 50px;
+  overflow: scroll;
+}
+
+// Scale up the modal
+@include media-breakpoint-up(sm) {
+  // Automatically set modal's width for larger viewports
+  .bs4modal-dialog {
+    max-width: $modal-md;
+    margin: $modal-dialog-margin-y-sm-up auto;
+  }
+
+  .bs4modal-dialog-centered {
+    min-height: calc(100% - (#{$modal-dialog-margin-y-sm-up} * 2));
+  }
+
+  .bs4modal-content {
+    @include box-shadow($modal-content-box-shadow-sm-up);
+  }
+
+  .bs4modal-sm { max-width: $modal-sm; }
+
+}
+
+@include media-breakpoint-up(lg) {
+  .bs4modal-lg { max-width: $modal-lg; }
+}
+
+// custom toggle
+.rkmodal_show {
+  display: block;
+}
+
+.rkmodal_hide {
+  display: none;
+}
