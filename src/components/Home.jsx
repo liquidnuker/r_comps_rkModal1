@@ -5,7 +5,7 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      rkModal1_active: true
+      rkModal1_active: false
     };
 
     // binders
@@ -28,7 +28,7 @@ export default class Home extends React.Component {
           <div class="col-sm-12">
           <RkModal1 
           pr_active={this.state.rkModal1_active}
-          pr_val_toggleModal={this.toggleModal}          
+          pr_val_toggleModal={this.toggleModal}         
            />
             <button onClick={() => { this.toggleModal(true) }}>RkModal1</button>
           </div>
